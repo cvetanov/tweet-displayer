@@ -1,0 +1,89 @@
+<div class="container">
+
+  <div class="jumbotron text-center">
+    <h1>'Allo, 'Allo!</h1>
+    <p class="lead">
+      <img src="assets/images/yeoman.png" alt="I'm Yeoman"><br>
+      Always a pleasure scaffolding your apps.
+    </p>
+  </div>
+  <div class="row">
+      
+  </div>
+</div>
+<div class="row">
+    <h1 class="text-center">Tweet preview application</h1>
+    <br>
+    <div class="col-lg-10 col-lg-offset-1">
+        <div class="row">
+            <div class="col-xs-6">
+                <button ng-click="connectButton()" id="connectButton" ng-show="!connectedTwitter" type="button" class="animate-hide animate-show btn btn-info">
+                    Connect
+                    <i class="fa fa-twitter"></i>
+                </button>
+                <button ng-click="refreshTimeline()" id="getTimelineButton" ng-show="refreshButton" type="button" class="animate-hide animate-show btn btn-info">Get My Timeline</button>
+                <button ng-click="signOut()" id="signOut" type="button" ng-show="signoutTwitterButton" class="animate-hide animate-show btn btn-primary">
+                    Sign Out
+                    <i class="fa fa-sign-out"></i>
+                </button>
+            </div>
+            <div class="col-xs-6">
+                <input type="text" ng-model="searchTerm" class="animate-show animate-hide form-control" id="searchBox" placeholder="Enter search term here" ng-show="signoutTwitterButton" />
+            </div>
+        </div>
+        <br>
+        <uib-tabset ng-show="signoutTwitterButton" class="animate-hide animate-show" active="activeForm">
+            <uib-tab index="0" heading="Tweets from people I follow">
+                <div class="row">
+                    <div class="col-xs-12" id="results">
+                        <div class="row" class="tweet" ng-repeat="t in tweets | filter:searchTerm">
+
+                            <div class="col-xs-2 col-sm-1">
+                                <a target="_blank" ng-href="http://twitter.com/{{t.user.screen_name}}">
+                                    <img ng-src="{{t.user.profile_image_url}}" class="img-circle">
+                                </a>
+                            </div>
+                            <div class="col-xs-9 col-sm-10">
+                                <small>{{t.user.name}}</small>
+                                <br> <span ng-bind-html="t.text"></span>
+                            </div>
+                            <div class="col-xs-1 col-sm-1">
+                                <a class="btn btn-sm btn-primary" target="_blank" ng-href="https://twitter.com/statuses/{{t.id_str}}">Preview <i class="fa fa-location-arrow"></i></a>
+                            </div>
+                        </div>
+
+                        <div ng-show="rateLimitError">
+                            Rate limit reached. You are making too many requests.
+                        </div>
+                        <div>
+                            <br/>
+                            <input type="button" class="animate-hide animate-show btn btn-info" id="load-more" ng-click="refreshTimeline(tweets[tweets.length-1].id)" ng-show="loadMore" value="Load More" />
+                        </div>
+                    </div>
+                </div>
+                
+            </uib-tab>
+            <uib-tab index="1" heading="My tweets">
+                <div class="row">
+                    <div class="col-xs-12" id="results">
+                        <div class="row" class="tweet" ng-repeat="t in myTweets | filter: searchTerm">
+
+                            <div class="col-xs-2 col-sm-1">
+                                <a target="_blank" ng-href="http://twitter.com/{{t.user.screen_name}}">
+                                    <img ng-src="{{t.user.profile_image_url}}" class="img-circle">
+                                </a>
+                            </div>
+                            <div class="col-xs-9 col-sm-10">
+                                <small>{{t.user.name}}</small>
+                                <br> <span ng-bind-html="t.text"></span>
+                            </div>
+                            <div class="col-xs-1 col-sm-1">
+                                <a class="btn btn-sm btn-primary" target="_blank" ng-href="https://twitter.com/statuses/{{t.id_str}}">Preview <i class="fa fa-location-arrow"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </uib-tab>
+        </uib-tabset>
+    </div>
+</div>
